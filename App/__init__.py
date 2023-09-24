@@ -17,8 +17,9 @@ def init_app():
     app.config.from_object(Config)
     
     app.register_blueprint(bp_users, url_prefix = '/users')
-    app.register_blueprint(bp_users, url_prefix = '/servers')
+    
+    return app
+""" app.register_blueprint(bp_users, url_prefix = '/servers')
     app.register_blueprint(bp_users, url_prefix = '/messages')
     app.register_blueprint(bp_users, url_prefix = '/channels')
-
-    return app
+"""

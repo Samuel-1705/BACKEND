@@ -1,54 +1,44 @@
 from ..models.model_users import User
 
-from flask import request, session
+from flask import request, session,jsonify
 
 class UserController:
 
     @classmethod
     def get(cls):
-        data = request.json
-        user = User(
-            username = data.get('username'),
-            password = data.get('password')
-        )
-        
-        if User.is_registered(user):
-            session['username'] = data.get('username')
-            return {"message": "Sesion iniciada"}, 200
-        else:
-            return {"message": "Usuario o contraseña incorrectos"}, 401
-    
-    """ @classmethod
-    def show_profile(cls):
-        username = session.get('username')
-        user = User.get(User(username = username))
-        if user is None:
-            return {"message": "Usuario no encontrado"}, 404
-        else:
-            return {
-                "user_id": user.user_id,
-                "username": user.username,
-                "email": user.email,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "date_of_birth": user.date_of_birth,
-                "phone_number": user.phone_number,
-                "creation_date": user.creation_date,
-                "last_login": user.last_login,
-                "status_id": user.status_id,
-                "role_id": user.role_id
-            }, 200 """
+        users = User.get()
+        return [user.to_dict() for user in users], 200
 
     @classmethod
-    def show_profile(cls):
-        username = session.get('username')
-        user = User.get(User(username = username))
-        if user is None:
-            return {"message": "Usuario no encontrado"}, 404
-        else:
-            return user.serialize(), 200
-    
+    def get_id(cls, user_id):
+        user_obj = User(user_id = user_id)
+        user = User.get(user_obj)
+        if user:
+            return jsonify(user.to_dict()), 200
+
     @classmethod
-    def logout(cls):
-        session.pop('username', None)
-        return {"message": "Sesion cerrada"}, 200
+    def create(cls):
+        data = request.json
+        user_obj = User(username=data['username'], password=data['password'], email=data['email'], profile_image=data['profile_image'])
+        User.create(user_obj)
+        return {'message': 'User created successfully'}, 201
+
+
+    @classmethod
+    def update(cls, user_id):
+        data = request.json
+        user_obj = User (
+            user_id=user_id,
+            username=data.get('username'), 
+            password=data.get('password'),
+            email=data.get('email'),
+            profile_image=data.get('profile_image')
+            )
+        User.update(user_obj)
+        return {'message': 'User updated successfully'}, 200
+"""
+    @classmethod
+    def delete(cls, category_id):
+        category_obj = Category(category_id=category_id)
+        Category.delete(category_obj)
+        return {'message': 'Category deleted successfully'}, 200"""
