@@ -59,3 +59,20 @@ class User:
         params.append(user.user_id)
         query = "UPDATE users SET " + ", ".join(query_parts) + " WHERE user_id = %s"
         DatabaseConnection.execute_query(query, params)
+        
+        
+        
+    @classmethod    
+    def is_registered(cls, user):
+        query = """SELECT user_id FROM Team.users 
+        WHERE username = %(username)s and email= %(email)s and password = %(password)s """
+        params = user.__dict__
+        result = DatabaseConnection.fetch_one(query, params=params)
+        if result is not None:
+            return True
+        return False
+    
+""" @classmethod
+def get_servers(cls, user):
+    
+        """
