@@ -58,3 +58,17 @@ class Server:
         params.append(server.server_id)
         query = "UPDATE servers SET " + ", ".join(query_parts) + " WHERE server_id = %s"
         DatabaseConnection.execute_query(query, params)
+        
+    classmethod
+    def get_users(server):
+        query = """SELECT u.user_id, u.username, u.password, u.email, u.profile_image
+                FROM team.users u 
+                INNER JOIN team.server_onboarding so ON u.user_id = so.user_id 
+                WHERE so.server_id = %(server_id)s"""
+        params = server.__dict__
+        results = DatabaseConnection.fetch_all(query, params)
+        users=[]
+        from .model_users import User
+        for row in results:
+            users.append(User(**dict(zip(User._keys, row))))
+        return users

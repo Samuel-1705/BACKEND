@@ -41,3 +41,12 @@ class ServerController:
         server_obj = Server(server_id=server_id)
         Server.delete(server_obj)
         return {'message': 'Server deleted successfully'}, 200
+    
+    @classmethod
+    def get_users(cls, server_id):
+        server = Server(server_id=server_id) 
+        users=[]   
+        for user in Server.get_users(server):
+            users.append(user.serialize())
+        return users, 200
+    
