@@ -72,7 +72,19 @@ class User:
             return True
         return False
     
-""" @classmethod
-def get_servers(cls, user):
-    
-        """
+    @classmethod
+    def get_servers(cls, user):
+        query = """SELECT s.server_id, s.name, s.description, s.icon
+                FROM team.servers s 
+                INNER JOIN team.server_onboarding so ON s.server_id = so.server_id 
+                WHERE so.user_id = %(user_id)s"""
+        params = user.__dict__
+        results = DatabaseConnection.fetch_all(query, params)
+        servers=[]
+        from .model_servers import Server
+        for row in results:
+            servers.append(Server(**dict(zip(Server._keys, row))))
+        return servers
+       
+
+

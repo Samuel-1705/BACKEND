@@ -9,11 +9,10 @@ bp_users.route("/", methods=["POST"])(UserController.create)
 bp_users.route("/<int:user_id>", methods =["PUT"])(UserController.update)
 bp_users.route("/<int:user_id>", methods= ["DELETE"])(UserController.delete)
 bp_users.route('/login', methods=['POST'])(UserController.login)
-"""bp_users.route("<int:user_id>/servers",methods=["GET"])(UserController.get_servers)"""
-"""bp_users.route('/profile', methods=['GET'])(UserController.show_profile)
-bp_users.route('/logout', methods=['GET'])(UserController.logout)"""
-"""bp_users.route("<int:user_id>/servers",methods=["GET"])(UserController.get_server)
-"""
+bp_users.route("<int:user_id>/servers",methods=["GET"])(UserController.get_servers)
+
+
+
  
 
  

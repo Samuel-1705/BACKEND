@@ -57,10 +57,11 @@ class UserController:
         else:
             return {"message": "Usuario, contraseña o Email incorrectos"}, 401
         
-"""@classmethod
-def get_servers(cls, user_id):
-user = User(user_id=user_id) 
-servers=[]   
-for server in User.get_servers(user):
-    servers.append(server.serialize())
-return servers, 200"""
+    @classmethod
+    def get_servers(cls, user_id):
+        user = User(user_id=user_id) 
+        servers=[]   
+        for server in User.get_servers(user):
+            servers.append(server.serialize())
+        return servers, 200
+    
